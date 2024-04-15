@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            >
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="5dp"
+                android:src="@android:drawable/stat_sys_download_done"
+                app:tint="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="80dp"
+            android:layout_marginRight="80dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/file_title"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexend_medium"
+                android:padding="5dp"
+                android:text="File Name "
+                android:textColor="#009688" />
+
+            <ProgressBar
+                android:id="@+id/file_progress"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="10" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/file_size"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lexend_medium"
+                    android:text="Downloaded : 15MB"
+                    android:textColor="#607d8b" />
+
+                <TextView
+                    android:id="@+id/file_status"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lexend_medium"
+                    android:gravity="end"
+                    android:text="Pending"
+                    android:textColor="#607d8b" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="-70dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/pause_resume"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:backgroundTint="#2196f3"
+                android:fontFamily="@font/lexend_medium"
+                android:insetTop="0dp"
+                android:padding="0dp"
+                android:text="PAUSE" />
+
+            <Button
+                android:id="@+id/sharefile"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:backgroundTint="#2196f3"
+                android:fontFamily="@font/lexend_medium"
+                android:insetTop="0dp"
+                android:padding="0dp"
+                android:text="SHARE" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
