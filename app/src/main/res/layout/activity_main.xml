@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/Clear"
             android:text="Clear"
-            android:backgroundTint="#2196f3"
+            android:backgroundTint="@color/design_default_color_error"
             android:onClick="Clear_All">
         </Button>
 

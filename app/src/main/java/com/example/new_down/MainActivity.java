@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     private boolean checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            return false;
+            return true;
         int result = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         return result == PackageManager.PERMISSION_GRANTED;
     }
@@ -260,12 +260,21 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                     }
 
                     int progress = (int) ((bytes_downloaded * 100L) / total_size);
+                    String file_size = String.valueOf(bytes_downloaded);
+//                    String temp = downloadModel.getProgress();
+//                    int temp2 = Integer.parseInt(temp);
+                    if(  Integer.parseInt(downloadModel.getProgress()) > progress) {
+                        progress = Integer.parseInt(downloadModel.getProgress());
+                        Long temp = (long) progress * total_size / 100L;
+                        file_size =  String.valueOf(temp);
+                    }
+
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "download_channel")
                             .setSmallIcon(R.drawable.ic_launcher_foreground)
                             .setContentTitle("Downloading...")
                             .setContentText("Download in progress")
                             .setProgress(100, progress, false) // Set progress bar
-                            .setPriority(NotificationCompat.PRIORITY_LOW);
+                            .setPriority(NotificationCompat.PRIORITY_HIGH);
 
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
                     if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -275,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                         notificationManager.notify(Integer.parseInt( downloadId), builder.build());
 
                     String status = getStatusMessage(cursor);
-                    publishProgress(String.valueOf(progress), String.valueOf(bytes_downloaded), status);
+                    publishProgress(String.valueOf(progress), file_size, status);
                     cursor.close();
                 }
             } catch (Exception e) {
@@ -396,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                             .setSmallIcon(R.drawable.ic_launcher_foreground)
                             .setContentTitle("Download Complete: " + data.get(index).getTitle())
                             .setContentText("Your file has been downloaded successfully.")
-                            .setPriority(NotificationCompat.PRIORITY_LOW);
+                            .setPriority(NotificationCompat.PRIORITY_HIGH);
 
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
                     if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -419,21 +428,26 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     }
 
     public static void openFile(Context context, File file, String mimeType, String chooserTitle) {
-        Uri contentUri = FileProvider.getUriForFile(context, context.getPackageName(), file);
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(contentUri, mimeType);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        // Create chooser title intent to provide a title for the chooser dialog
-        Intent chooserIntent = Intent.createChooser(intent, chooserTitle);
         try {
-            context.startActivity(chooserIntent);
-        } catch (ActivityNotFoundException e) {
-            // If no application can handle the intent, show an error message
-            Toast.makeText(context, "No app found to open the file", Toast.LENGTH_SHORT).show();
-        }
+            Uri contentUri = FileProvider.getUriForFile(context, context.getPackageName(), file);
 
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(contentUri, mimeType);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            // Create chooser title intent to provide a title for the chooser dialog
+            Intent chooserIntent = Intent.createChooser(intent, chooserTitle);
+            try {
+                context.startActivity(chooserIntent);
+            } catch (ActivityNotFoundException e) {
+                // If no application can handle the intent, show an error message
+                Toast.makeText(context, "No app found to open the file", Toast.LENGTH_SHORT).show();
+            }
+            Toast.makeText(context, mimeType, Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e){
+            Toast.makeText(context, "Cannot open the file", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -475,7 +489,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                 FileNameMap fileNameMap = URLConnection.getFileNameMap();
                 String fileExtenstion = fileNameMap.getContentTypeFor(file.getName());
                 openFile(MainActivity.this, file, fileExtenstion, "Open " + data.get(position).getTitle());
-                Toast.makeText(MainActivity.this, fileExtenstion, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -539,21 +552,25 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     }
 
     public static void shareFile(Context context, File file, String mimeType, String subject, String message) {
-        // Generate content URI for the file using FileProvider
-        Uri contentUri = FileProvider.getUriForFile(context, context.getPackageName(), file);
+        try {
+            // Generate content URI for the file using FileProvider
+            Uri contentUri = FileProvider.getUriForFile(context, context.getPackageName(), file);
 
-        // Create an intent to share the file
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType(mimeType); // Set the MIME type of the file
-        shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri); // Attach the content URI
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject); // Set the subject of the message
-        shareIntent.putExtra(Intent.EXTRA_TEXT, message); // Set the text message
+            // Create an intent to share the file
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType(mimeType); // Set the MIME type of the file
+            shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri); // Attach the content URI
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject); // Set the subject of the message
+            shareIntent.putExtra(Intent.EXTRA_TEXT, message); // Set the text message
 
-        // Grant read permission to the receiving app
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            // Grant read permission to the receiving app
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-        // Launch the intent to share the file
-        context.startActivity(Intent.createChooser(shareIntent, "Share File"));
+            // Launch the intent to share the file
+            context.startActivity(Intent.createChooser(shareIntent, "Share File"));
+        } catch (Exception e){
+            Toast.makeText(context, "Cannot Share the file", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

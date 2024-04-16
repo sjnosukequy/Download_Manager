@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:paddingStart="0dp">
 
     <LinearLayout
         android:id="@+id/line1"
@@ -15,21 +16,20 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             >
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:padding="5dp"
+                android:id="@+id/image_down"
                 android:src="@android:drawable/stat_sys_download_done"
-                app:tint="@color/black" />
+                app:tint="@color/black"
+                android:layout_marginRight="5dp"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="80dp"
-            android:layout_marginRight="80dp"
             android:orientation="vertical">
 
             <TextView
@@ -40,7 +40,7 @@
                 android:fontFamily="@font/lexend_medium"
                 android:padding="5dp"
                 android:text="File Name "
-                android:textColor="#009688" />
+                android:textColor="#263238" />
 
             <ProgressBar
                 android:id="@+id/file_progress"
@@ -75,35 +75,32 @@
                     android:text="Pending"
                     android:textColor="#607d8b" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                android:gravity="end"
+                >
+
+                <Button
+                    android:id="@+id/pause_resume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#2196f3"
+                    android:fontFamily="@font/lexend_medium"
+                    android:layout_marginRight="10dp"
+                    android:text="PAUSE" />
+
+                <Button
+                    android:id="@+id/sharefile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#2196f3"
+                    android:fontFamily="@font/lexend_medium"
+                    android:text="SHARE" />
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="-70dp"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/pause_resume"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:backgroundTint="#2196f3"
-                android:fontFamily="@font/lexend_medium"
-                android:insetTop="0dp"
-                android:padding="0dp"
-                android:text="PAUSE" />
-
-            <Button
-                android:id="@+id/sharefile"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:backgroundTint="#2196f3"
-                android:fontFamily="@font/lexend_medium"
-                android:insetTop="0dp"
-                android:padding="0dp"
-                android:text="SHARE" />
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
